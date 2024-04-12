@@ -65,4 +65,42 @@ describe("Validation", () => {
       }
     }
   });
+
+  it("should validation object", () => {
+    const loginSchema = z.object({
+      email: z.string().email(),
+      password: z.string().min(5).max(10),
+    });
+
+    const request = {
+      email: "rizal@example.com",
+      password: "12345",
+    };
+
+    const result = loginSchema.parse(request);
+    console.info(result);
+  });
+
+  it("should nested validation object", () => {
+    const userSchema = z.object({
+      id: z.number().min(1),
+      name: z.string().min(5).max(15),
+      address: z.object({
+        city: z.string().min(5).max(20),
+        province: z.string().min(5).max(20),
+      }),
+    });
+
+    const request = {
+      id: 1,
+      name: "Rizal",
+      address: {
+        city: "Jakarta",
+        province: "DKI Jakarta",
+      },
+    };
+
+    const result = userSchema.parse(request);
+    console.info(result);
+  });
 });
