@@ -174,4 +174,10 @@ describe("Validation", () => {
     const result = registerSchema.parse(request);
     console.info(result);
   });
+
+  it("should can support transform", () => {
+    const schema = z.string().transform((value) => value.toUpperCase());
+    const result = schema.parse("rizal");
+    console.info(result);
+  });
 });
