@@ -156,4 +156,22 @@ describe("Validation", () => {
       }
     }
   });
+
+  it("should support optional validation", () => {
+    const registerSchema = z.object({
+      username: z.string().min(5).max(10),
+      password: z.string().min(5).max(10),
+      firstname: z.string().min(5).max(10),
+      lastname: z.string().min(5).max(10).optional(),
+    });
+
+    const request = {
+      username: "rizal",
+      password: "12345",
+      firstname: "rizal",
+    };
+
+    const result = registerSchema.parse(request);
+    console.info(result);
+  });
 });
