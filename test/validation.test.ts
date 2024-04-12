@@ -103,4 +103,30 @@ describe("Validation", () => {
     const result = userSchema.parse(request);
     console.info(result);
   });
+
+  //   Collection
+  it("should support collection array", () => {
+    const schema = z.array(z.string()).min(1).max(10);
+    const request: Array<string> = ["a", "b", "c"];
+    const result: Array<string> = schema.parse(request);
+    console.info(result);
+  });
+
+  it("should support collection set", () => {
+    const schema = z.set(z.string()).min(1).max(10);
+    const request: Set<string> = new Set(["a", "b", "c"]);
+    const result: Set<string> = schema.parse(request);
+    console.info(result);
+  });
+
+  it("should support collection map", () => {
+    const schema = z.map(z.string(), z.number());
+    const request: Map<string, number> = new Map([
+      ["a", 1],
+      ["b", 2],
+      ["c", 3],
+    ]);
+    const result: Map<string, number> = schema.parse(request);
+    console.info(result);
+  });
 });
