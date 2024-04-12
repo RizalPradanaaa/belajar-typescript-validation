@@ -129,4 +129,31 @@ describe("Validation", () => {
     const result: Map<string, number> = schema.parse(request);
     console.info(result);
   });
+
+  it("should support validation message", () => {
+    const userSchema = z.object({
+      email: z.string().email("email must be valid"),
+      password: z
+        .string()
+        .min(5, "password must be at least 5 characters")
+        .max(10, "password must be at most 10 characters"),
+    });
+
+    const request = {
+      email: "rizal@example.com",
+      password: "12345",
+    };
+
+    try {
+      const result = userSchema.parse(request);
+      console.info(result);
+    } catch (error) {
+      if (error instanceof ZodError) {
+        console.info(error.errors);
+        error.errors.forEach((error) => {
+          console.info(error.message);
+        });
+      }
+    }
+  });
 });
