@@ -1,4 +1,4 @@
-import { ZodError, z } from "zod";
+import { ZodError, object, z } from "zod";
 
 describe("Validation", () => {
   it("should support validation", () => {
@@ -178,6 +178,32 @@ describe("Validation", () => {
   it("should can support transform", () => {
     const schema = z.string().transform((value) => value.toUpperCase());
     const result = schema.parse("rizal");
+    console.info(result);
+  });
+
+  it("should support custom validation", () => {
+    const schema = z.object({
+      username: z
+        .string()
+        .min(5)
+        .transform((data, ctx) => {
+          if (data !== data.toUpperCase()) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: "username must be uppercase",
+            });
+          }
+          return data;
+        }),
+      password: z.string().min(5),
+    });
+
+    const request = {
+      username: "RIZAL",
+      password: "12345",
+    };
+
+    const result = schema.parse(request);
     console.info(result);
   });
 });
